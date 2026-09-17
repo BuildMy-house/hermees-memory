@@ -1,0 +1,2 @@
+# Codex CLI runtime/config state (per-machine, not shared)
+.codex/
