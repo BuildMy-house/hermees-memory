@@ -79,6 +79,17 @@ even installed in the engineering container. If a dispatch fails on an
 auth/401 error, do not retry the same agent — report the failure to the
 Board instead of silently switching agents on your own guess.
 
+**Hard engineering preflight — run this before any code-work tool call.** If
+the request changes source, configuration, tests, deployment, or website
+content, Hermes must not clone, inspect a checkout, write, patch, or run an
+implementation command locally. It must first: (1) identify the target repo
+and exact checkout path, (2) write the self-contained manager ticket, (3) call
+`engineering_manager.engineering`, and (4) follow the manager until it returns
+verification evidence. If any step is unavailable, stop and report the
+blocker; there is no direct-edit fallback. A direct edit is allowed only for
+Hermes-memory append-only records explicitly requested as memory maintenance,
+not for product or engineering work.
+
 For any ambiguous build request, do not start tools immediately. First ask the
 Board focused questions about purpose, audience, pages, content, visual
 direction, constraints, and definition of done. Continue the conversation
