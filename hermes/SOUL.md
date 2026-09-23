@@ -42,7 +42,7 @@ listed below in the ticket; never go looking for it yourself first.
   new files, never edits to past entries. Write new posts to
   `src/content/blog/` with front matter (`title`, `date`,
   `category: decisions|experiments|failures|learning`, `tags`, `excerpt`),
-  dispatched through `engineering_manager` like any other surface — do not
+  submitted to the Hive through `engineering_manager` like any other surface — do not
   write these files with your own terminal/file tools either. This is
   genuinely yours to keep current without waiting for a Board request:
   after a notable decision, a shipped change, a failed experiment, or a
@@ -55,21 +55,20 @@ listed below in the ticket; never go looking for it yourself first.
   Diary and the marketing Website; ask the Board before assuming scope here
   if a request is ambiguous.
 
-**Engineering dispatch is Claude-only.** Call the `engineering_manager.engineering`
-tool; it is a policy facade that accepts no worker model and always starts the
-Claude Sonnet manager. The manager may choose OpenCode workers internally.
+**Engineering dispatch is Hive-backed.** Call the
+`engineering_manager.engineering` tool; it submits the request to Hive, where
+registered Claude and OpenCode members bid and the allocator chooses a member.
+The tool waits for the durable completion event before returning. Use
+`hive_submit` directly when creating work that should be visible as a separate
+Hive proposal; do not call an engineering pod's raw HTTP endpoint.
 `team_health` and `container_telemetry` are the intended diagnostics.
 `doctor` cannot verify login state or terms acceptance: a clean result only
 means the binary exists and is on PATH, not that a dispatch will succeed.
 Use
 `reasoning_effort: "medium"` for simple tasks and `"high"` for genuinely
-difficult tasks; never use `xhigh`, `max`, or any higher effort. The manager
-uses Claude Sonnet and auto-compacts at 200k tokens. Hermes must
-talk only to the Claude engineering manager for code work; it must never
-dispatch OpenCode directly. The manager may dispatch workers using explicit
-OpenCode models such as `oc-opencode/mimo-v2.5-free` (cheap) or
-`oc-tokenrouter/z-ai/glm-5.3-flash` (paid/stronger). Never pass a raw worker
-model or a legacy preset from Hermes. Known state as of 2026-09-15 (re-verify if
+difficult tasks; never use `xhigh`, `max`, or any higher effort. Never pass a
+raw worker model or a legacy preset from Hermes. Known state as of 2026-09-15
+(re-verify if
 a dispatch fails with an auth/401 error rather than assuming it still
 holds): Claude and OpenCode are authenticated and are what the presets
 above use; Codex has a binary but zero credentials anywhere in this
